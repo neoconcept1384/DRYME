@@ -3,8 +3,8 @@
    Stratégie : Cache First pour assets, Network First pour APIs
    ============================================================ */
 
-const CACHE_NAME    = 'dryme-v1.0.0';
-const CACHE_STATIC  = 'dryme-static-v1';
+const CACHE_NAME    = 'dryme-v1.0.1';
+const CACHE_STATIC  = 'dryme-static-v2';
 const CACHE_API     = 'dryme-api-v1';
 
 const STATIC_URLS = [
