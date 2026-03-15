@@ -14,6 +14,152 @@
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/dark-mode.css">
   <link rel="stylesheet" href="/css/components.css">
+  <style>
+    /* ── Carte localisation étendue ── */
+    .location-card {
+      flex-wrap: wrap;
+      gap: var(--s-3);
+    }
+    .location-actions {
+      display: flex;
+      gap: var(--s-2);
+      align-items: center;
+    }
+    .location-search-btn {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: var(--s-1);
+      padding: var(--s-2) var(--s-3);
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-2);
+      background: var(--card);
+      transition: all var(--t-fast);
+      cursor: pointer;
+    }
+    .location-search-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* ── Modal recherche ville ── */
+    .city-search-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 80px;
+      opacity: 0; visibility: hidden;
+      transition: all .25s;
+    }
+    .city-search-overlay.open {
+      opacity: 1; visibility: visible;
+    }
+    .city-search-box {
+      background: var(--card);
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 480px;
+      margin: 0 var(--s-4);
+      box-shadow: var(--sh-lg);
+      overflow: hidden;
+      transform: translateY(-10px);
+      transition: transform .25s;
+    }
+    .city-search-overlay.open .city-search-box {
+      transform: translateY(0);
+    }
+
+    /* Header modal */
+    .city-search-header {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-4) var(--s-5);
+      border-bottom: 1px solid var(--border);
+    }
+    .city-search-icon { font-size: 18px; flex-shrink: 0; }
+    .city-search-input {
+      flex: 1;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+    .city-search-input::placeholder { color: var(--text-3); }
+    .city-search-close {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--text-2);
+      transition: background var(--t-fast);
+      flex-shrink: 0;
+    }
+    .city-search-close:hover { background: var(--border-2); }
+
+    /* Résultats */
+    .city-search-body {
+      min-height: 60px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .city-search-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--s-6);
+    }
+    .city-result-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s-4) var(--s-5);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: background var(--t-fast);
+      border-bottom: 1px solid var(--border);
+      font-family: inherit;
+      text-align: left;
+    }
+    .city-result-item:last-child { border-bottom: none; }
+    .city-result-item:hover { background: var(--bg); }
+    .city-result-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .city-result-meta {
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    .city-search-empty {
+      padding: var(--s-6);
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-2);
+    }
+    .city-search-hint {
+      padding: var(--s-3) var(--s-5);
+      font-size: 12px;
+      color: var(--text-3);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
@@ -85,9 +231,16 @@
             <div class="location-meta" id="locationMeta">Détection en cours…</div>
           </div>
         </div>
-        <button class="location-refresh" onclick="refreshApp()" title="Actualiser">
-          🔄 Actualiser
-        </button>
+        <div class="location-actions">
+          <!-- Bouton recherche manuelle -->
+          <button class="location-search-btn" onclick="openCitySearch()" title="Changer de ville">
+            🔍 Changer
+          </button>
+          <!-- Bouton GPS -->
+          <button class="location-refresh" onclick="refreshApp()" title="Actualiser via GPS">
+            🔄 GPS
+          </button>
+        </div>
       </div>
 
       <!-- Layout desktop avec sidebar -->
@@ -95,12 +248,8 @@
         <div>
           <!-- Créneaux -->
           <div class="slots-grid">
-            <div class="time-slot-card card" id="cardToday">
-              <!-- Rempli par ui.js -->
-            </div>
-            <div class="time-slot-card card" id="cardTomorrow">
-              <!-- Rempli par ui.js -->
-            </div>
+            <div class="time-slot-card card" id="cardToday"></div>
+            <div class="time-slot-card card" id="cardTomorrow"></div>
           </div>
 
           <!-- PUB #2 — RECTANGLE MIDDLE -->
@@ -116,10 +265,9 @@
             <div class="ad-tablet"  data-ad-placeholder="bottom"></div>
             <div class="ad-desktop" data-ad-placeholder="bottom"></div>
           </div>
-
         </div>
 
-        <!-- PUB #4 — SIDEBAR (desktop uniquement) -->
+        <!-- PUB #4 — SIDEBAR -->
         <aside class="ad-sidebar">
           <div class="ad-sticky">
             <div class="ad-container">
@@ -130,7 +278,6 @@
         </aside>
       </div>
 
-      <!-- Note info -->
       <p style="text-align:center;font-size:13px;color:var(--text-3);margin-bottom:var(--s-8)">
         Données météo fournies par <a href="https://openweathermap.org" target="_blank" rel="noopener">OpenWeatherMap</a> — Actualisé toutes les 3h
       </p>
@@ -139,6 +286,44 @@
   </div><!-- /container -->
 </main>
 
+<!-- MODAL RECHERCHE VILLE -->
+<div class="city-search-overlay" id="citySearchModal"
+     onclick="if(event.target===this)closeCitySearch()">
+  <div class="city-search-box">
+
+    <div class="city-search-header">
+      <span class="city-search-icon">🔍</span>
+      <input
+        class="city-search-input"
+        id="citySearchInput"
+        type="text"
+        placeholder="Rechercher une ville…"
+        autocomplete="off"
+        oninput="onCitySearchInput(this.value)"
+      >
+      <button class="city-search-close" onclick="closeCitySearch()">✕</button>
+    </div>
+
+    <div class="city-search-body">
+      <!-- Loader -->
+      <div class="city-search-loader hidden" id="citySearchLoader">
+        <div class="spinner" style="width:28px;height:28px;border-width:2px"></div>
+      </div>
+      <!-- Résultats -->
+      <div id="citySearchResults"></div>
+      <!-- Vide -->
+      <div class="city-search-empty hidden" id="citySearchEmpty">
+        Aucune ville trouvée
+      </div>
+    </div>
+
+    <div class="city-search-hint">
+      Tapez au moins 2 caractères · Données OpenWeatherMap
+    </div>
+
+  </div>
+</div>
+
 <!-- MODAL EXPLICATION SCORE -->
 <div class="modal-overlay" id="scoreModal" onclick="if(event.target===this)closeScoreModal()">
   <div class="modal">
@@ -146,62 +331,43 @@
       <h3 class="modal-title">Détail du score</h3>
       <button class="modal-close" onclick="closeScoreModal()">✕</button>
     </div>
-
-    <!-- Score global -->
     <div style="text-align:center;margin-bottom:var(--s-6)">
       <div style="font-size:48px" id="modalScoreEmoji">🌟</div>
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;color:var(--text);margin:var(--s-2) 0"
-           id="modalScoreVal">—</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;color:var(--text);margin:var(--s-2) 0" id="modalScoreVal">—</div>
       <span class="score-badge" id="modalScoreLabel">—</span>
     </div>
-
-    <!-- Barres de détail -->
     <div class="score-breakdown">
-
       <div class="score-item" id="barTemp">
         <div class="score-item-header">
           <span class="score-item-label">🌡️ Température</span>
           <span class="score-item-val">—</span>
         </div>
-        <div class="score-bar-bg">
-          <div class="score-bar-fill" style="width:0%;background:#f97316"></div>
-        </div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:0%;background:#f97316"></div></div>
       </div>
-
       <div class="score-item" id="barHumidity">
         <div class="score-item-header">
           <span class="score-item-label">💧 Humidité</span>
           <span class="score-item-val">—</span>
         </div>
-        <div class="score-bar-bg">
-          <div class="score-bar-fill" style="width:0%;background:#3b82f6"></div>
-        </div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:0%;background:#3b82f6"></div></div>
       </div>
-
       <div class="score-item" id="barWind">
         <div class="score-item-header">
           <span class="score-item-label">💨 Vent</span>
           <span class="score-item-val">—</span>
         </div>
-        <div class="score-bar-bg">
-          <div class="score-bar-fill" style="width:0%;background:#06b6d4"></div>
-        </div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:0%;background:#06b6d4"></div></div>
       </div>
-
       <div class="score-item" id="barSun">
         <div class="score-item-header">
           <span class="score-item-label">☀️ Ensoleillement</span>
           <span class="score-item-val">—</span>
         </div>
-        <div class="score-bar-bg">
-          <div class="score-bar-fill" style="width:0%;background:#eab308"></div>
-        </div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:0%;background:#eab308"></div></div>
       </div>
-
     </div>
-
     <p style="font-size:13px;color:var(--text-3);margin-top:var(--s-5);text-align:center">
-      Score calculé via formule Magnus et modèle Penman simplifié
+      Score calculé via formule Magnus · Modèle Penman simplifié
     </p>
   </div>
 </div>
