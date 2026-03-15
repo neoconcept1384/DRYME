@@ -1,0 +1,41 @@
+/* ============================================================
+   DRYME - Mode Sombre
+   ============================================================ */
+
+.dark-toggle { position: relative; overflow: hidden; }
+
+.icon-sun, .icon-moon {
+  position: absolute;
+  transition: opacity var(--t-base), transform var(--t-base);
+  font-size: 16px;
+}
+.icon-sun  { opacity: 1; transform: rotate(0deg) scale(1); }
+.icon-moon { opacity: 0; transform: rotate(-90deg) scale(.6); }
+
+body.dark .icon-sun  { opacity: 0; transform: rotate(90deg) scale(.6); }
+body.dark .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+
+/* Transition de page */
+body { transition: background var(--t-base), color var(--t-base); }
+
+/* Images en dark mode */
+body.dark img:not([src*=".svg"]) { filter: brightness(0.88); }
+
+/* Champs de formulaire */
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: var(--card);
+  border-color: var(--border-2);
+  color: var(--text);
+}
+body.dark input::placeholder,
+body.dark textarea::placeholder { color: var(--text-3); }
+
+/* Scrollbar */
+body.dark {
+  scrollbar-color: var(--border-2) transparent;
+}
+body::-webkit-scrollbar { width: 8px; }
+body::-webkit-scrollbar-track { background: transparent; }
+body::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }

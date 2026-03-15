@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRYME – Séchez malin, économisez l'énergie</title>
+  <meta name="description" content="DRYME trouve le moment parfait pour étendre votre linge grâce à la météo, le pollen et la qualité de l'air. Gratuit, sans inscription.">
+  <meta name="keywords" content="séchage linge, météo, économie énergie, CO2, écologie, étendre linge">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://dryme.app/">
+  <meta property="og:title"       content="DRYME – Séchez malin">
+  <meta property="og:description" content="Trouvez le moment parfait pour sécher votre linge naturellement.">
+  <meta property="og:image"       content="https://dryme.app/images/og-image.jpg">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="theme-color"        content="#1d4ed8">
+  <link rel="manifest"            href="/manifest.json">
+  <link rel="icon"                href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/dark-mode.css">
+  <link rel="stylesheet" href="/css/landing.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+      <nav class="main-nav">
+        <a href="/" class="active">Accueil</a>
+        <a href="/app.html">Application</a>
+        <a href="/comment-ca-marche.html">Comment ça marche</a>
+        <a href="/a-propos.html">À propos</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/app.html" class="btn-nav-cta">Essayer →</a>
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()" aria-label="Basculer mode sombre">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="/" onclick="closeMobileNav()">🏠 Accueil</a>
+  <a href="/app.html" onclick="closeMobileNav()">📱 Application</a>
+  <a href="/comment-ca-marche.html" onclick="closeMobileNav()">❓ Comment ça marche</a>
+  <a href="/a-propos.html" onclick="closeMobileNav()">ℹ️ À propos</a>
+  <a href="/contact.html" onclick="closeMobileNav()">✉️ Contact</a>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+
+        <div class="hero-content">
+          <span class="pill">🌿 100% gratuit, sans inscription</span>
+          <h1 class="hero-title">
+            Séchez votre linge au <span class="highlight">bon moment</span>
+          </h1>
+          <p class="hero-subtitle">
+            DRYME analyse météo, pollen et qualité de l'air pour vous indiquer la fenêtre idéale.
+            Économisez de l'énergie et réduisez votre empreinte carbone.
+          </p>
+          <div class="hero-actions">
+            <a href="/app.html" class="btn btn-primary btn-lg">Voir mes créneaux →</a>
+            <a href="/comment-ca-marche.html" class="btn btn-secondary btn-lg">Comment ça marche</a>
+          </div>
+          <p class="hero-note">
+            <span>Gratuit</span>
+            <span>Sans inscription</span>
+            <span>Données en temps réel</span>
+          </p>
+        </div>
+
+        <!-- Mini-aperçu de l'app -->
+        <div class="hero-preview">
+          <div class="preview-header">
+            <div>
+              <div class="p-title">DRYME</div>
+              <div class="p-loc">📍 Paris, France</div>
+            </div>
+            <span style="color:rgba(255,255,255,.7);font-size:20px">🌤️</span>
+          </div>
+          <div class="preview-body">
+            <div class="preview-slot">
+              <div class="preview-slot-label">Aujourd'hui</div>
+              <div class="preview-time">14h – 18h</div>
+              <div class="preview-metrics">
+                <span class="preview-metric">🌡️ 22°C</span>
+                <span class="preview-metric">💧 45%</span>
+                <span class="preview-metric">💨 15 km/h</span>
+              </div>
+              <div class="preview-score">
+                <div class="preview-score-num">87</div>
+                <div class="preview-score-label">/ 100 — 🌟 Idéal</div>
+              </div>
+            </div>
+            <div style="font-size:13px;color:var(--text-3);text-align:center;padding:8px 0;">
+              🌿 Économie : 80g CO₂
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-value">80g</div><div class="stat-label">CO₂ économisé par séchage</div></div>
+        <div class="stat"><div class="stat-value">3 kWh</div><div class="stat-label">Énergie épargnée</div></div>
+        <div class="stat"><div class="stat-value">4h</div><div class="stat-label">Créneaux optimaux</div></div>
+        <div class="stat"><div class="stat-value">0€</div><div class="stat-label">Coût d'utilisation</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FONCTIONNALITÉS -->
+  <section class="features">
+    <div class="container">
+      <span class="pill text-center" style="display:block;width:fit-content;margin:0 auto var(--s-3)">Fonctionnalités</span>
+      <h2 class="section-title">Tout ce dont vous avez besoin</h2>
+      <p class="section-subtitle">Un algorithme scientifique qui prend en compte tous les paramètres pour un séchage optimal.</p>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">🌡️</div>
+          <h3>Météo précise</h3>
+          <p>Température, humidité, vent et ensoleillement analysés en temps réel via OpenWeatherMap.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌼</div>
+          <h3>Indice pollen</h3>
+          <p>Jauge visuelle du niveau de pollen pour éviter d'étendre votre linge lors des pics allergiques.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💨</div>
+          <h3>Qualité de l'air</h3>
+          <p>Indicateur AQI en 3 niveaux pour savoir si l'air extérieur est sain pour vos vêtements.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🧮</div>
+          <h3>Score 0–100</h3>
+          <p>Algorithme multi-critères basé sur les formules de Magnus et Penman pour un score fiable.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌿</div>
+          <h3>Économie CO₂</h3>
+          <p>Visualisez votre économie : 80g de CO₂ évités à chaque cycle de séchage naturel.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>PWA installable</h3>
+          <p>Ajoutez DRYME à votre écran d'accueil. Fonctionne hors-ligne pour les données mises en cache.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">Simple comme bonjour</h2>
+      <p class="section-subtitle">Trois étapes pour sécher votre linge de manière optimale.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Autorisez la localisation</h3>
+          <p>DRYME détecte votre position automatiquement. Aucune donnée personnelle n'est conservée.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Consultez les créneaux</h3>
+          <p>Deux fenêtres de 4h — aujourd'hui et demain — avec score détaillé et conditions météo.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Étendez et économisez !</h3>
+          <p>Profitez du meilleur moment. Votre linge sèche plus vite et vous économisez énergie et CO₂.</p>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="/app.html" class="btn btn-primary btn-lg">Commencer maintenant →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner-inner">
+        <h2>Prêt à sécher malin ?</h2>
+        <p>Rejoignez les utilisateurs qui économisent énergie et CO₂ chaque semaine.</p>
+        <a href="/app.html" class="btn-white">Accéder à l'application</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="margin-bottom:var(--s-2)">DRYME<span class="logo-dot"></span></a>
+        <p>Séchez votre linge naturellement et contribuez à réduire les émissions de CO₂.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Application</h4>
+        <nav>
+          <a href="/app.html">Accéder à l'app</a>
+          <a href="/comment-ca-marche.html">Comment ça marche</a>
+          <a href="/a-propos.html">À propos</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <nav>
+          <a href="/mentions-legales.html">Mentions légales</a>
+          <a href="/politique-confidentialite.html">Confidentialité</a>
+          <a href="/contact.html">Contact</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 DRYME — Tous droits réservés</span>
+      <span>Données météo : OpenWeatherMap</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/dark-mode.js"></script>
+<script>
+  // Menu mobile
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('mobileNav').classList.toggle('open');
+  });
+  function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+  // Enregistrer le Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(console.warn);
+    });
+  }
+</script>
+
+</body>
+</html>

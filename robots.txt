@@ -1,0 +1,11 @@
+# DRYME - robots.txt
+User-agent: *
+Allow: /
+Disallow: /icons/
+Disallow: /images/
+
+# Pages légales (inutile d'indexer)
+Disallow: /mentions-legales.html
+Disallow: /politique-confidentialite.html
+
+Sitemap: https://dryme.app/sitemap.xml

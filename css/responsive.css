@@ -1,0 +1,91 @@
+/* ============================================================
+   DRYME - Responsive / Media Queries
+   Mobile First
+   ============================================================ */
+
+/* ── Mobile base (320px+) ── */
+.container { padding: 0 var(--s-4); }
+.main-nav  { display: none; }
+.btn-nav-cta { display: none; }
+
+/* ── Tablet (768px+) ── */
+@media (min-width: 768px) {
+  .container { padding: 0 var(--s-6); }
+  .main-nav  { display: flex; }
+  .btn-nav-cta { display: inline-flex; }
+
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+  .footer-bottom { flex-direction: row; justify-content: space-between; }
+
+  .slots-grid { grid-template-columns: 1fr 1fr; }
+
+  .ad-mobile  { display: none; }
+  .ad-tablet  { display: block; }
+  .ad-desktop { display: none; }
+}
+
+/* ── Desktop (1024px+) ── */
+@media (min-width: 1024px) {
+  .container { padding: 0 var(--s-8); }
+
+  .ad-tablet  { display: none; }
+  .ad-desktop { display: block; }
+}
+
+/* ── Large Desktop (1280px+) ── */
+@media (min-width: 1280px) {
+  .app-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--s-8);
+    align-items: start;
+  }
+  .ad-sidebar { display: block !important; }
+}
+
+/* ── Touch targets ── */
+button, a { min-height: 44px; }
+input, select, textarea { font-size: 16px; }
+
+/* ── Hamburger menu (mobile) ── */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--s-2);
+  cursor: pointer;
+}
+.menu-toggle span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text-2);
+  border-radius: 2px;
+  transition: all var(--t-base);
+}
+@media (min-width: 768px) {
+  .menu-toggle { display: none; }
+}
+
+/* ── Mobile nav drawer ── */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 64px; left: 0; right: 0; bottom: 0;
+  background: var(--bg-alt);
+  z-index: 99;
+  padding: var(--s-6);
+  flex-direction: column;
+  gap: var(--s-2);
+  border-top: 1px solid var(--border);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 768px) {
+  .mobile-nav { display: none !important; }
+}

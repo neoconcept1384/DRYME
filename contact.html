@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – DRYME</title>
+  <meta name="description" content="Contactez l'équipe DRYME pour toute question ou suggestion.">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/dark-mode.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+      <nav class="main-nav">
+        <a href="/">Accueil</a>
+        <a href="/app.html">Application</a>
+        <a href="/comment-ca-marche.html">Comment ça marche</a>
+        <a href="/a-propos.html">À propos</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/app.html" class="btn-nav-cta">Essayer →</a>
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()" aria-label="Mode sombre">
+          <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="pill">Contact</span>
+      <h1>Nous contacter</h1>
+      <p>Une question, un bug, une suggestion ? On est là !</p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 var(--s-16)">
+    <div class="container" style="max-width:600px">
+
+      <div class="card" style="padding:var(--s-6)">
+
+        <!-- Message succès (masqué par défaut) -->
+        <div id="successMsg" class="hidden" style="text-align:center;padding:var(--s-8)">
+          <div style="font-size:56px;margin-bottom:var(--s-4)">✅</div>
+          <h3>Message envoyé !</h3>
+          <p style="margin-top:var(--s-2)">Nous vous répondrons dans les plus brefs délais à <strong id="confirmEmail"></strong>.</p>
+          <a href="/" class="btn btn-primary" style="margin-top:var(--s-5)">Retour à l'accueil</a>
+        </div>
+
+        <!-- Formulaire -->
+        <form id="contactForm" onsubmit="submitContact(event)">
+
+          <div class="form-group">
+            <label class="form-label" for="name">Nom *</label>
+            <input class="form-input" type="text" id="name" name="name"
+                   placeholder="Votre nom" required minlength="2">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email *</label>
+            <input class="form-input" type="email" id="email" name="email"
+                   placeholder="votre@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subject">Sujet</label>
+            <select class="form-input" id="subject" name="subject">
+              <option value="question">Question générale</option>
+              <option value="bug">Signaler un bug</option>
+              <option value="suggestion">Suggestion / Amélioration</option>
+              <option value="partenariat">Partenariat</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">Message *</label>
+            <textarea class="form-textarea" id="message" name="message"
+                      placeholder="Décrivez votre demande…" required minlength="10"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%">
+            Envoyer le message →
+          </button>
+
+          <p style="font-size:13px;color:var(--text-3);text-align:center;margin-top:var(--s-4)">
+            Ou écrivez directement à
+            <a href="mailto:maison.alerte.domotique@gmail.com">maison.alerte.domotique@gmail.com</a>
+          </p>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2025 DRYME</span>
+      <span><a href="/mentions-legales.html">Mentions légales</a> · <a href="/politique-confidentialite.html">Confidentialité</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/js/dark-mode.js"></script>
+<script>
+function submitContact(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  // En production, envoyer vers un backend / service email (ex: Formspree, EmailJS)
+  // Pour l'instant, simulation côté client
+  document.getElementById('contactForm').classList.add('hidden');
+  document.getElementById('confirmEmail').textContent = email;
+  document.getElementById('successMsg').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

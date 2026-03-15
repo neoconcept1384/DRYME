@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRYME – Application</title>
+  <meta name="description" content="Trouvez le meilleur moment pour sécher votre linge aujourd'hui et demain.">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/dark-mode.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+      <nav class="main-nav">
+        <a href="/">Accueil</a>
+        <a href="/app.html" class="active">Application</a>
+        <a href="/comment-ca-marche.html">Comment ça marche</a>
+        <a href="/a-propos.html">À propos</a>
+      </nav>
+      <div class="header-actions">
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()" aria-label="Basculer mode sombre">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="/">🏠 Accueil</a>
+  <a href="/app.html">📱 Application</a>
+  <a href="/comment-ca-marche.html">❓ Comment ça marche</a>
+  <a href="/contact.html">✉️ Contact</a>
+</nav>
+
+<!-- PUB #1 — BANNIÈRE TOP -->
+<div class="ad-container">
+  <div class="ad-label">Publicité</div>
+  <div class="ad-mobile"  data-ad-placeholder="top-mobile"></div>
+  <div class="ad-tablet"  data-ad-placeholder="top-tablet"></div>
+  <div class="ad-desktop" data-ad-placeholder="top-desktop"></div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="container">
+
+    <!-- Chargement -->
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <p class="loading-text">Récupération des données météo…</p>
+    </div>
+
+    <!-- Erreur -->
+    <div id="errorCard" class="error-card hidden">
+      <div class="error-icon">⚠️</div>
+      <p>Erreur de chargement.</p>
+      <button class="btn btn-primary" style="margin-top:var(--s-4)" onclick="refreshApp()">Réessayer</button>
+    </div>
+
+    <!-- Contenu principal -->
+    <div id="appContent" class="hidden">
+
+      <!-- Localisation -->
+      <div class="location-card" id="locationCard">
+        <div class="location-info">
+          <div class="location-icon">📍</div>
+          <div>
+            <div class="location-city" id="locationCity">…</div>
+            <div class="location-meta" id="locationMeta">Détection en cours…</div>
+          </div>
+        </div>
+        <button class="location-refresh" onclick="refreshApp()" title="Actualiser">
+          🔄 Actualiser
+        </button>
+      </div>
+
+      <!-- Layout desktop avec sidebar -->
+      <div class="app-layout">
+        <div>
+          <!-- Créneaux -->
+          <div class="slots-grid">
+            <div class="time-slot-card card" id="cardToday">
+              <!-- Rempli par ui.js -->
+            </div>
+            <div class="time-slot-card card" id="cardTomorrow">
+              <!-- Rempli par ui.js -->
+            </div>
+          </div>
+
+          <!-- PUB #2 — RECTANGLE MIDDLE -->
+          <div class="ad-container">
+            <div class="ad-label">Publicité</div>
+            <div data-ad-placeholder="middle"></div>
+          </div>
+
+          <!-- PUB #3 — BANNIÈRE BOTTOM -->
+          <div class="ad-container">
+            <div class="ad-label">Publicité</div>
+            <div class="ad-mobile"  data-ad-placeholder="top-mobile"></div>
+            <div class="ad-tablet"  data-ad-placeholder="bottom"></div>
+            <div class="ad-desktop" data-ad-placeholder="bottom"></div>
+          </div>
+
+        </div>
+
+        <!-- PUB #4 — SIDEBAR (desktop uniquement) -->
+        <aside class="ad-sidebar">
+          <div class="ad-sticky">
+            <div class="ad-container">
+              <div class="ad-label">Publicité</div>
+              <div data-ad-placeholder="sidebar"></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Note info -->
+      <p style="text-align:center;font-size:13px;color:var(--text-3);margin-bottom:var(--s-8)">
+        Données météo fournies par <a href="https://openweathermap.org" target="_blank" rel="noopener">OpenWeatherMap</a> — Actualisé toutes les 3h
+      </p>
+
+    </div><!-- /appContent -->
+  </div><!-- /container -->
+</main>
+
+<!-- MODAL EXPLICATION SCORE -->
+<div class="modal-overlay" id="scoreModal" onclick="if(event.target===this)closeScoreModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Détail du score</h3>
+      <button class="modal-close" onclick="closeScoreModal()">✕</button>
+    </div>
+
+    <!-- Score global -->
+    <div style="text-align:center;margin-bottom:var(--s-6)">
+      <div style="font-size:48px" id="modalScoreEmoji">🌟</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;color:var(--text);margin:var(--s-2) 0"
+           id="modalScoreVal">—</div>
+      <span class="score-badge" id="modalScoreLabel">—</span>
+    </div>
+
+    <!-- Barres de détail -->
+    <div class="score-breakdown">
+
+      <div class="score-item" id="barTemp">
+        <div class="score-item-header">
+          <span class="score-item-label">🌡️ Température</span>
+          <span class="score-item-val">—</span>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="width:0%;background:#f97316"></div>
+        </div>
+      </div>
+
+      <div class="score-item" id="barHumidity">
+        <div class="score-item-header">
+          <span class="score-item-label">💧 Humidité</span>
+          <span class="score-item-val">—</span>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="width:0%;background:#3b82f6"></div>
+        </div>
+      </div>
+
+      <div class="score-item" id="barWind">
+        <div class="score-item-header">
+          <span class="score-item-label">💨 Vent</span>
+          <span class="score-item-val">—</span>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="width:0%;background:#06b6d4"></div>
+        </div>
+      </div>
+
+      <div class="score-item" id="barSun">
+        <div class="score-item-header">
+          <span class="score-item-label">☀️ Ensoleillement</span>
+          <span class="score-item-val">—</span>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="width:0%;background:#eab308"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="font-size:13px;color:var(--text-3);margin-top:var(--s-5);text-align:center">
+      Score calculé via formule Magnus et modèle Penman simplifié
+    </p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+        <p>Séchage naturel intelligent.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <nav>
+          <a href="/">Accueil</a>
+          <a href="/comment-ca-marche.html">Comment ça marche</a>
+          <a href="/a-propos.html">À propos</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <nav>
+          <a href="/mentions-legales.html">Mentions légales</a>
+          <a href="/politique-confidentialite.html">Confidentialité</a>
+          <a href="/contact.html">Contact</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 DRYME</span>
+      <span>Données : OpenWeatherMap</span>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/js/dark-mode.js"></script>
+<script src="/js/calculator.js"></script>
+<script src="/js/weather.js"></script>
+<script src="/js/location.js"></script>
+<script src="/js/ui.js"></script>
+<script src="/js/share.js"></script>
+<script src="/js/ads.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('mobileNav').classList.toggle('open');
+  });
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(console.warn));
+  }
+</script>
+
+</body>
+</html>

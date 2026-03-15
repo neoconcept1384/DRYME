@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos – DRYME</title>
+  <meta name="description" content="Découvrez l'histoire et la mission de DRYME, l'application de séchage intelligent.">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/dark-mode.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+      <nav class="main-nav">
+        <a href="/">Accueil</a>
+        <a href="/app.html">Application</a>
+        <a href="/comment-ca-marche.html">Comment ça marche</a>
+        <a href="/a-propos.html" class="active">À propos</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/app.html" class="btn-nav-cta">Essayer →</a>
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()" aria-label="Mode sombre">
+          <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="pill">À propos</span>
+      <h1>Notre mission</h1>
+      <p>Rendre le séchage naturel accessible à tous, en aidant chaque foyer à réduire sa consommation d'énergie.</p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 var(--s-16)">
+    <div class="container" style="max-width:760px">
+
+      <div class="prose">
+        <h2>🌿 Pourquoi DRYME ?</h2>
+        <p>Un sèche-linge consomme en moyenne <strong>3 à 5 kWh</strong> par cycle, soit environ 80 à 130g de CO₂ selon le mix électrique français. Multiplié par les 52 semaines de l'année et les millions de foyers en France, l'impact est considérable.</p>
+        <p>DRYME est née d'une idée simple : <em>si l'on sait qu'il va faire beau, pourquoi ne pas en profiter ?</em> L'application aide à répondre à cette question de manière précise, en combinant données météorologiques, qualité de l'air et pollen.</p>
+
+        <h2>🧪 La technologie</h2>
+        <p>DRYME repose sur plusieurs briques technologiques :</p>
+        <ul>
+          <li><strong>OpenWeatherMap</strong> — Prévisions météo à intervalles de 3h, gratuit jusqu'à 1000 appels/jour</li>
+          <li><strong>API Air Pollution</strong> — Index de qualité de l'air (AQI) et composants PM2.5/PM10</li>
+          <li><strong>Formule Magnus</strong> — Calcul de la pression de vapeur saturante pour estimer l'évaporation</li>
+          <li><strong>Modèle Penman simplifié</strong> — Estimation de l'évapotranspiration basée sur énergie solaire et vent</li>
+          <li><strong>Progressive Web App</strong> — Technologie web moderne permettant une expérience proche d'une app native</li>
+        </ul>
+
+        <h2>🌍 Impact écologique</h2>
+        <p>Chaque séchage naturel évite l'utilisation du sèche-linge électrique. Sur la base d'un sèche-linge consommant 3 kWh et d'un facteur d'émission du réseau électrique français de <strong>30g CO₂/kWh</strong>, cela représente <strong>90g de CO₂ évités</strong> (nous affichons 80g de manière conservatrice).</p>
+        <p>À l'échelle d'un foyer qui fait 2 lessives par semaine, cela représente <strong>8 kg de CO₂ économisés par an</strong> — l'équivalent de 40 km en voiture.</p>
+
+        <h2>📬 Contact</h2>
+        <p>Vous avez des suggestions, des retours ou souhaitez contribuer au projet ? Contactez-nous via notre <a href="/contact.html">formulaire de contact</a> ou par email : <a href="mailto:maison.alerte.domotique@gmail.com">maison.alerte.domotique@gmail.com</a></p>
+      </div>
+
+      <!-- Technologies -->
+      <h2 style="margin:var(--s-10) 0 var(--s-5)">🛠️ Stack technique</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s-4)">
+        <div class="card" style="padding:var(--s-4);text-align:center">
+          <div style="font-size:32px;margin-bottom:var(--s-2)">🌤️</div>
+          <strong>OpenWeatherMap</strong>
+          <p style="font-size:13px;margin-top:var(--s-1)">Météo temps réel</p>
+        </div>
+        <div class="card" style="padding:var(--s-4);text-align:center">
+          <div style="font-size:32px;margin-bottom:var(--s-2)">📱</div>
+          <strong>PWA</strong>
+          <p style="font-size:13px;margin-top:var(--s-1)">Progressive Web App</p>
+        </div>
+        <div class="card" style="padding:var(--s-4);text-align:center">
+          <div style="font-size:32px;margin-bottom:var(--s-2)">⚡</div>
+          <strong>Vanilla JS</strong>
+          <p style="font-size:13px;margin-top:var(--s-1)">Zéro dépendance</p>
+        </div>
+        <div class="card" style="padding:var(--s-4);text-align:center">
+          <div style="font-size:32px;margin-bottom:var(--s-2)">🎨</div>
+          <strong>CSS Variables</strong>
+          <p style="font-size:13px;margin-top:var(--s-1)">Design system</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:var(--s-10)">
+        <a href="/app.html" class="btn btn-primary btn-lg">Essayer DRYME →</a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2025 DRYME — Tous droits réservés</span>
+      <span><a href="/mentions-legales.html">Mentions légales</a> · <a href="/contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/js/dark-mode.js"></script>
+</body>
+</html>

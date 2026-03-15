@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment ça marche – DRYME</title>
+  <meta name="description" content="Découvrez comment DRYME calcule le score de séchage optimal pour votre linge.">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/dark-mode.css">
+  <link rel="stylesheet" href="/css/landing.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+      <nav class="main-nav">
+        <a href="/">Accueil</a>
+        <a href="/app.html">Application</a>
+        <a href="/comment-ca-marche.html" class="active">Comment ça marche</a>
+        <a href="/a-propos.html">À propos</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/app.html" class="btn-nav-cta">Essayer →</a>
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()" aria-label="Mode sombre">
+          <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="pill">Guide</span>
+      <h1>Comment ça marche ?</h1>
+      <p>DRYME utilise un algorithme scientifique pour trouver le créneau optimal pour sécher votre linge naturellement.</p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 var(--s-16)">
+    <div class="container">
+
+      <!-- Étapes -->
+      <div class="how-it-works" style="background:transparent;padding:0">
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Géolocalisation</h3>
+            <p>DRYME accède à votre position GPS (avec votre accord) ou utilise Paris par défaut. Aucune donnée n'est stockée sur nos serveurs.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Collecte des données</h3>
+            <p>Météo (OpenWeatherMap), qualité de l'air (AQI) et estimation pollen (via PM2.5) sont récupérés en temps réel.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Calcul du score</h3>
+            <p>Notre algorithme analyse 4 critères pour produire un score de 0 à 100 et identifier la meilleure fenêtre de 4h.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Algorithme -->
+      <div style="max-width:720px;margin:var(--s-12) auto 0">
+        <h2 style="margin-bottom:var(--s-6)">🧮 L'algorithme en détail</h2>
+
+        <div style="display:grid;gap:var(--s-4)">
+
+          <div class="card" style="padding:var(--s-5)">
+            <div style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-3)">
+              <span style="font-size:24px">🌡️</span>
+              <h3 style="margin:0">Température — 30 points</h3>
+            </div>
+            <p>La plage idéale est 15–25°C (30 pts). Au-delà de 25°C il fait chaud mais ça sèche encore bien (25 pts). En dessous de 10°C le séchage est très ralenti.</p>
+          </div>
+
+          <div class="card" style="padding:var(--s-5)">
+            <div style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-3)">
+              <span style="font-size:24px">💧</span>
+              <h3 style="margin:0">Humidité — 25 points</h3>
+            </div>
+            <p>Score décroissant : <code>max(0, 25 − humidité × 0.25)</code>. Plus l'air est sec, mieux votre linge sèche. Au-delà de 85% d'humidité, une pénalité supplémentaire s'applique.</p>
+          </div>
+
+          <div class="card" style="padding:var(--s-5)">
+            <div style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-3)">
+              <span style="font-size:24px">💨</span>
+              <h3 style="margin:0">Vent — 25 points</h3>
+            </div>
+            <p>Un vent de 8–20 km/h est idéal (25 pts) : il accélère l'évaporation sans arracher votre linge. Inférieur à 5 km/h (stagnant) ou supérieur à 30 km/h (trop fort) sont pénalisés.</p>
+          </div>
+
+          <div class="card" style="padding:var(--s-5)">
+            <div style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-3)">
+              <span style="font-size:24px">☀️</span>
+              <h3 style="margin:0">Ensoleillement — 20 points</h3>
+            </div>
+            <p>Basé sur la couverture nuageuse : <code>(1 − nuages/100) × 20</code>. Un ciel dégagé maximise le rayonnement solaire et accélère le séchage, surtout de 10h à 17h (bonus appliqué).</p>
+          </div>
+
+        </div>
+
+        <div class="card" style="padding:var(--s-5);margin-top:var(--s-4);background:rgba(37,99,235,.05);border-color:var(--primary-light)">
+          <h3 style="margin-bottom:var(--s-3)">⚠️ Pénalités</h3>
+          <p>Des pénalités réduisent le score en cas de : probabilité de pluie élevée (−0,8 × prob.), humidité &gt; 85% (−2 pts / % au-dessus), températures négatives (−3 pts / °C en dessous de 0).</p>
+        </div>
+
+        <!-- Scores -->
+        <h2 style="margin:var(--s-10) 0 var(--s-5)">🎯 Échelle des scores</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--s-3)">
+          <div style="display:flex;align-items:center;gap:var(--s-3)">
+            <span class="score-badge excellent">🌟 80–100 — Idéal</span>
+            <span style="font-size:14px;color:var(--text-2)">Conditions parfaites, étendez maintenant !</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3)">
+            <span class="score-badge tres-bon">✨ 60–79 — Très bon</span>
+            <span style="font-size:14px;color:var(--text-2)">Très bonnes conditions de séchage.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3)">
+            <span class="score-badge correct">👍 40–59 — Correct</span>
+            <span style="font-size:14px;color:var(--text-2)">Séchage possible mais pas optimal.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3)">
+            <span class="score-badge deconseille">⚠️ 20–39 — Déconseillé</span>
+            <span style="font-size:14px;color:var(--text-2)">Préférez attendre un meilleur créneau.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3)">
+            <span class="score-badge mauvais">❌ 0–19 — Mauvais</span>
+            <span style="font-size:14px;color:var(--text-2)">Évitez le séchage extérieur aujourd'hui.</span>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:var(--s-10)">
+          <a href="/app.html" class="btn btn-primary btn-lg">Voir mes créneaux →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2025 DRYME — Tous droits réservés</span>
+      <span><a href="/mentions-legales.html">Mentions légales</a> · <a href="/politique-confidentialite.html">Confidentialité</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/js/dark-mode.js"></script>
+</body>
+</html>

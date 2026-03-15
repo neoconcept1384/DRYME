@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de confidentialité – DRYME</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/dark-mode.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">DRYME<span class="logo-dot"></span></a>
+      <nav class="main-nav">
+        <a href="/">Accueil</a>
+        <a href="/app.html">Application</a>
+      </nav>
+      <div class="header-actions">
+        <button class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()" aria-label="Mode sombre">
+          <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Politique de confidentialité</h1>
+      <p>Comment DRYME traite vos données personnelles, conformément au RGPD.</p>
+    </div>
+  </section>
+
+  <div class="legal-section">
+    <div class="prose">
+
+      <h2>1. Données collectées</h2>
+      <p>DRYME collecte un minimum de données personnelles pour fonctionner :</p>
+      <ul>
+        <li><strong>Données de géolocalisation</strong> : votre position GPS approximative est utilisée pour récupérer la météo locale. Elle n'est <em>jamais</em> transmise à nos serveurs.</li>
+        <li><strong>Préférences locales</strong> : mode sombre et dernière localisation sont stockés dans <code>localStorage</code> de votre navigateur, uniquement sur votre appareil.</li>
+        <li><strong>Données de navigation</strong> : si Google AdSense est activé, des cookies publicitaires peuvent être déposés (voir section 4).</li>
+      </ul>
+
+      <h2>2. Finalités du traitement</h2>
+      <p>Les données de géolocalisation servent exclusivement à :</p>
+      <ul>
+        <li>Interroger l'API OpenWeatherMap pour la météo locale</li>
+        <li>Afficher les créneaux de séchage adaptés à votre zone</li>
+      </ul>
+
+      <h2>3. Base légale</h2>
+      <p>Le traitement des données de géolocalisation est basé sur le <strong>consentement explicite</strong> de l'utilisateur (demande de permission navigateur). Vous pouvez refuser et Paris sera utilisé par défaut.</p>
+
+      <h2>4. Cookies et publicité</h2>
+      <p>DRYME peut utiliser Google AdSense pour afficher des publicités. Ce service utilise des cookies pour personnaliser les annonces. Vous pouvez gérer vos préférences via :</p>
+      <ul>
+        <li>Les paramètres de votre navigateur</li>
+        <li><a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a></li>
+        <li><a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener">Your Online Choices</a></li>
+      </ul>
+
+      <h2>5. Sous-traitants</h2>
+      <p>DRYME fait appel aux sous-traitants suivants :</p>
+      <ul>
+        <li><strong>OpenWeatherMap</strong> (OpenWeather Ltd, UK) — Données météo. <a href="https://openweathermap.org/privacy-policy" target="_blank" rel="noopener">Voir leur politique</a></li>
+        <li><strong>Google AdSense</strong> (Google LLC, USA) — Publicités (si activé). <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Voir leur politique</a></li>
+      </ul>
+
+      <h2>6. Durée de conservation</h2>
+      <p>Les données stockées localement (localStorage) sont conservées 7 jours puis supprimées automatiquement. Vous pouvez les effacer à tout moment en vidant le cache de votre navigateur.</p>
+
+      <h2>7. Vos droits (RGPD)</h2>
+      <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+      <ul>
+        <li>Droit d'accès à vos données</li>
+        <li>Droit de rectification</li>
+        <li>Droit à l'effacement (« droit à l'oubli »)</li>
+        <li>Droit d'opposition au traitement</li>
+        <li>Droit à la portabilité</li>
+      </ul>
+      <p>Pour exercer ces droits : <a href="mailto:maison.alerte.domotique@gmail.com">maison.alerte.domotique@gmail.com</a></p>
+      <p>Vous pouvez également introduire une réclamation auprès de la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a>.</p>
+
+      <h2>8. Transfert hors UE</h2>
+      <p>OpenWeatherMap (UK) et Google (USA) peuvent traiter des données hors UE. Ces transferts sont encadrés par des clauses contractuelles types conformes au RGPD.</p>
+
+      <h2>9. Modification</h2>
+      <p>Cette politique peut être mise à jour. La date de dernière modification est indiquée ci-dessous.</p>
+      <p><em>Dernière mise à jour : 1er janvier 2025</em></p>
+
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2025 DRYME</span>
+      <span><a href="/mentions-legales.html">Mentions légales</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/js/dark-mode.js"></script>
+</body>
+</html>
