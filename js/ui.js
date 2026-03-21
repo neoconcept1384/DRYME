@@ -32,13 +32,11 @@ function openScoreModal(slot) {
 
   const badge = getScoreBadge(slot.score);
 
-  // Remplir les données
   document.getElementById('modalScoreVal').textContent    = `${slot.score}/100`;
   document.getElementById('modalScoreEmoji').textContent  = badge.emoji;
   document.getElementById('modalScoreLabel').textContent  = badge.text;
   document.getElementById('modalScoreLabel').className    = `score-badge ${badge.cssClass}`;
 
-  // Barres de détail
   const bd = slot.breakdown || {};
   setBar('barTemp',     bd.temp     || 0, 30);
   setBar('barHumidity', bd.humidity || 0, 25);
@@ -147,40 +145,54 @@ function renderSlot(cardId, slot, dayLabel) {
   `;
 }
 
+/* ── Jauge pollen
+   Sens gauche → droite : Faible à gauche, Élevé à droite
+   Arc tracé de gauche (M 20 100) vers droite (160 100) sens horaire (0 0 1)
+   dashOffset 176 = arc vide (Faible)
+   dashOffset 88  = arc à moitié (Moyen)
+   dashOffset 0   = arc plein (Élevé)
+── */
 function buildPollenGauge(pollen) {
   if (!pollen) return '';
-  const circumference = 176; // demi-cercle SVG
   const offset = pollen.dashOffset ?? 176;
 
   return `
     <div class="pollen-section">
-      <div class="pollen-title">🌼 Pollen</div>
+      <div class="pollen-title">🌼 Indice pollen estimé</div>
       <div class="pollen-gauge-wrap">
-        <svg class="pollen-gauge" viewBox="0 0 180 110" aria-label="Jauge pollen niveau ${pollen.level}/5">
-          <!-- Arc fond -->
+        <svg class="pollen-gauge" viewBox="0 0 180 110" aria-label="Jauge pollen : ${pollen.text}">
+
+          <!-- Arc fond : gauche → droite sens horaire -->
           <path d="M 20 100 A 70 70 0 0 1 160 100"
                 fill="none" stroke="var(--border-2)" stroke-width="12"
                 stroke-linecap="round"/>
-          <!-- Arc rempli -->
+
+          <!-- Arc rempli depuis la GAUCHE (Faible) vers la DROITE (Élevé) -->
           <path d="M 20 100 A 70 70 0 0 1 160 100"
                 fill="none"
                 stroke="${pollen.color}"
                 stroke-width="12"
                 stroke-linecap="round"
-                stroke-dasharray="${circumference}"
+                stroke-dasharray="176"
                 stroke-dashoffset="${offset}"
                 class="gauge-fill"
                 style="transition: stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)"/>
-          <!-- Labels -->
+
+          <!-- Faible à GAUCHE, Élevé à DROITE -->
           <text x="16"  y="118" font-size="10" fill="var(--text-3)" text-anchor="middle">Faible</text>
           <text x="164" y="118" font-size="10" fill="var(--text-3)" text-anchor="middle">Élevé</text>
         </svg>
       </div>
       <div class="pollen-value-label">${pollen.emoji} ${pollen.text}</div>
+      <div class="pollen-disclaimer">
+        ⚠️ Estimation basée sur les particules fines (PM2.5).<br>
+        Pour un suivi allergie précis : <a href="https://www.pollens.fr" target="_blank" rel="noopener">pollens.fr</a>
+      </div>
     </div>
   `;
 }
 
+/* ── Qualité air ── */
 function buildAirQuality(air) {
   if (!air) return '';
   return `
@@ -191,17 +203,49 @@ function buildAirQuality(air) {
   `;
 }
 
+/* ── État vide avec astuce séchage intérieur ── */
 function buildEmptyState(dayLabel) {
+  const isToday = dayLabel === "Aujourd'hui";
+
+  const tips = [
+    { icon: '🪟', title: 'Aérez la pièce',         text: 'Ouvrez deux fenêtres en vis-à-vis 10 minutes pour créer un courant d\'air et évacuer l\'humidité du linge.' },
+    { icon: '🌡️', title: 'Choisissez la bonne pièce', text: 'La salle de bain chauffée après une douche est idéale : température élevée + air déjà humide = séchage rapide.' },
+    { icon: '📏', title: 'Espacez bien les vêtements', text: 'Laissez au moins 5 cm entre chaque pièce sur l\'étendoir pour permettre à l\'air de circuler librement.' },
+    { icon: '🌀', title: 'Activez la VMC',           text: 'Si vous avez une VMC, passez-la en vitesse maximale. Elle extrait l\'humidité produite par le linge.' },
+    { icon: '🔄', title: 'Retournez le linge',       text: 'Retournez chaque pièce à mi-séchage. Les zones en contact avec l\'étendoir sèchent moins vite.' },
+    { icon: '🌿', title: 'Évitez le radiateur direct', text: 'Préférez un étendoir à 50 cm du radiateur pour un séchage doux qui n\'abîme pas les fibres.' },
+    { icon: '⏰', title: 'Essorage optimal',          text: 'Un bon essorage à 1200 tr/min réduit le temps de séchage de 30%. Vérifiez le réglage de votre machine.' },
+    { icon: '🧺', title: 'Triez par épaisseur',       text: 'Accrochez les pièces épaisses en hauteur où l\'air est plus chaud, les légères en bas.' },
+  ];
+
+  const tip = tips[Math.floor(Math.random() * tips.length)];
+  const label = isToday ? "aujourd'hui" : "demain";
+
   return `
     <div class="empty-state">
-      <div class="empty-icon">⛅</div>
-      <div class="empty-title">Aucun créneau disponible ${dayLabel === 'Aujourd\'hui' ? 'aujourd\'hui' : 'demain'}</div>
-      <p class="empty-text">Les conditions météo ne sont pas favorables.<br>Pensez à utiliser un séchoir d'intérieur.</p>
+      <div class="empty-icon">🌧️</div>
+      <div class="empty-title">Pas de créneau idéal ${label}</div>
+      <p class="empty-text">Les conditions extérieures ne sont pas favorables au séchage naturel.</p>
+
+      <div class="indoor-tip">
+        <div class="indoor-tip-header">
+          <span class="indoor-tip-icon">${tip.icon}</span>
+          <div>
+            <div class="indoor-tip-label">💡 Astuce séchage intérieur</div>
+            <div class="indoor-tip-title">${tip.title}</div>
+          </div>
+        </div>
+        <p class="indoor-tip-text">${tip.text}</p>
+      </div>
+
+      <p class="empty-comeback">
+        🔄 Revérifiez ${isToday ? 'demain matin' : 'après-demain'} — les conditions peuvent évoluer.
+      </p>
     </div>
   `;
 }
 
-/* ── Affichage de la carte localisation ── */
+/* ── Localisation ── */
 function renderLocation(city, method) {
   const el = document.getElementById('locationCity');
   if (el) el.textContent = city;
@@ -212,7 +256,9 @@ function renderLocation(city, method) {
       ? '📍 Détecté automatiquement'
       : method === 'cache'
         ? '📍 Localisation mémorisée'
-        : '📍 Localisation par défaut';
+        : method === 'manual'
+          ? '📍 Ville sélectionnée manuellement'
+          : '📍 Localisation par défaut';
   }
 }
 
@@ -233,8 +279,8 @@ function showError(message) {
   el.classList.remove('hidden');
 }
 
-// Export global pour HTML inline
+// Export global
 window.openScoreModal  = openScoreModal;
 window.closeScoreModal = closeScoreModal;
 window.showToast       = showToast;
-window._slots          = {}; // stockage des données pour les callbacks
+window._slots          = {};
