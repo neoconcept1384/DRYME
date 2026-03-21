@@ -34,67 +34,133 @@
   <section class="page-hero">
     <div class="container">
       <h1>Politique de confidentialité</h1>
-      <p>Comment DRYME traite vos données personnelles, conformément au RGPD.</p>
+      <p>Comment DRYME collecte, utilise et protège vos données personnelles, conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679) et à la loi Informatique et Libertés.</p>
     </div>
   </section>
 
   <div class="legal-section">
     <div class="prose">
 
-      <h2>1. Données collectées</h2>
-      <p>DRYME collecte un minimum de données personnelles pour fonctionner :</p>
+      <h2>1. Responsable du traitement</h2>
+      <p>Le responsable du traitement des données personnelles collectées via le site <strong>https://getdryme.netlify.app</strong> est l'éditeur du site, joignable à l'adresse : <a href="mailto:VOTRE_EMAIL">VOTRE_EMAIL</a></p>
+
+      <h2>2. Données collectées</h2>
+      <p>DRYME applique le principe de minimisation des données. Voici l'exhaustivité des données traitées :</p>
+
+      <h3>2.1 Données de géolocalisation</h3>
+      <p>Avec votre consentement explicite (permission navigateur), votre position GPS approximative est utilisée pour interroger l'API météo. Ces coordonnées sont :</p>
       <ul>
-        <li><strong>Données de géolocalisation</strong> : votre position GPS approximative est utilisée pour récupérer la météo locale. Elle n'est <em>jamais</em> transmise à nos serveurs.</li>
-        <li><strong>Préférences locales</strong> : mode sombre et dernière localisation sont stockés dans <code>localStorage</code> de votre navigateur, uniquement sur votre appareil.</li>
-        <li><strong>Données de navigation</strong> : si Google AdSense est activé, des cookies publicitaires peuvent être déposés (voir section 4).</li>
+        <li>Transmises directement à OpenWeatherMap depuis votre navigateur</li>
+        <li>Jamais stockées sur nos serveurs (nous n'en avons pas)</li>
+        <li>Conservées 7 jours dans le stockage local de votre navigateur (localStorage) pour éviter de redemander la permission</li>
+      </ul>
+      <p>Si vous refusez la géolocalisation, Paris est utilisé par défaut.</p>
+
+      <h3>2.2 Préférences d'affichage</h3>
+      <p>Votre préférence de mode sombre (clair/sombre) est sauvegardée localement dans votre navigateur. Cette donnée ne quitte jamais votre appareil.</p>
+
+      <h3>2.3 Données de navigation (cookies tiers)</h3>
+      <p>Les services tiers intégrés au site peuvent collecter des données de navigation. Voir section 5.</p>
+
+      <h2>3. Finalités du traitement</h2>
+      <p>Les données sont traitées pour les finalités suivantes :</p>
+      <ul>
+        <li><strong>Fonctionnement du service</strong> : récupération des prévisions météo adaptées à votre localisation</li>
+        <li><strong>Personnalisation</strong> : mémorisation de vos préférences d'affichage</li>
+        <li><strong>Publicité</strong> (si AdSense activé) : affichage d'annonces publicitaires contextuelles</li>
+        <li><strong>Mesure d'audience</strong> (Google Search Console) : analyse statistique anonymisée du trafic</li>
       </ul>
 
-      <h2>2. Finalités du traitement</h2>
-      <p>Les données de géolocalisation servent exclusivement à :</p>
+      <h2>4. Base légale des traitements</h2>
       <ul>
-        <li>Interroger l'API OpenWeatherMap pour la météo locale</li>
-        <li>Afficher les créneaux de séchage adaptés à votre zone</li>
+        <li><strong>Géolocalisation</strong> : consentement explicite (Art. 6.1.a RGPD) — permission navigateur</li>
+        <li><strong>Préférences locales</strong> : intérêt légitime (Art. 6.1.f RGPD) — amélioration de l'expérience utilisateur</li>
+        <li><strong>Cookies publicitaires AdSense</strong> : consentement (via la bannière de consentement Google)</li>
+        <li><strong>Mesure d'audience</strong> : intérêt légitime (Art. 6.1.f RGPD) — statistiques anonymisées</li>
       </ul>
 
-      <h2>3. Base légale</h2>
-      <p>Le traitement des données de géolocalisation est basé sur le <strong>consentement explicite</strong> de l'utilisateur (demande de permission navigateur). Vous pouvez refuser et Paris sera utilisé par défaut.</p>
+      <h2>5. Sous-traitants et services tiers</h2>
+      <p>DRYME fait appel aux services tiers suivants, susceptibles de traiter des données personnelles (notamment votre adresse IP) :</p>
 
-      <h2>4. Cookies et publicité</h2>
-      <p>DRYME peut utiliser Google AdSense pour afficher des publicités. Ce service utilise des cookies pour personnaliser les annonces. Vous pouvez gérer vos préférences via :</p>
+      <h3>OpenWeatherMap</h3>
+      <p>OpenWeather Ltd — Royaume-Uni<br>
+      Finalité : fourniture des données météorologiques et de qualité de l'air<br>
+      Données transmises : coordonnées GPS approximatives<br>
+      <a href="https://openweathermap.org/privacy-policy" target="_blank" rel="noopener">Politique de confidentialité OpenWeatherMap</a></p>
+
+      <h3>Google AdSense</h3>
+      <p>Google LLC — États-Unis<br>
+      Finalité : affichage de publicités personnalisées<br>
+      Données collectées : cookies publicitaires, identifiants publicitaires, données de navigation<br>
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Politique de confidentialité Google</a> —
+      <a href="https://adssettings.google.com" target="_blank" rel="noopener">Gérer mes préférences publicitaires</a></p>
+
+      <h3>Google Fonts</h3>
+      <p>Google LLC — États-Unis<br>
+      Finalité : chargement des polices d'écriture du site<br>
+      Données collectées : adresse IP, informations du navigateur (user-agent)<br>
+      <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener">FAQ confidentialité Google Fonts</a></p>
+
+      <h3>Google Search Console</h3>
+      <p>Google LLC — États-Unis<br>
+      Finalité : analyse statistique du trafic et indexation dans les moteurs de recherche<br>
+      Données collectées : données de navigation anonymisées, requêtes de recherche<br>
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Politique de confidentialité Google</a></p>
+
+      <h3>Netlify</h3>
+      <p>Netlify, Inc. — États-Unis<br>
+      Finalité : hébergement du site web<br>
+      Données collectées : logs de connexion (adresse IP, navigateur, pages visitées) — conservés 30 jours<br>
+      <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Politique de confidentialité Netlify</a></p>
+
+      <h2>6. Transferts hors Union Européenne</h2>
+      <p>Plusieurs sous-traitants (Google, Netlify, OpenWeatherMap) sont établis aux États-Unis ou au Royaume-Uni. Ces transferts sont encadrés par :</p>
       <ul>
-        <li>Les paramètres de votre navigateur</li>
-        <li><a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a></li>
-        <li><a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener">Your Online Choices</a></li>
+        <li>Les clauses contractuelles types (CCT) approuvées par la Commission européenne</li>
+        <li>Le cadre EU-US Data Privacy Framework pour Google</li>
+        <li>L'accord d'adéquation UK-UE pour OpenWeatherMap</li>
       </ul>
 
-      <h2>5. Sous-traitants</h2>
-      <p>DRYME fait appel aux sous-traitants suivants :</p>
+      <h2>7. Durée de conservation</h2>
       <ul>
-        <li><strong>OpenWeatherMap</strong> (OpenWeather Ltd, UK) — Données météo. <a href="https://openweathermap.org/privacy-policy" target="_blank" rel="noopener">Voir leur politique</a></li>
-        <li><strong>Google AdSense</strong> (Google LLC, USA) — Publicités (si activé). <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Voir leur politique</a></li>
+        <li><strong>Localisation (localStorage)</strong> : 7 jours, puis suppression automatique</li>
+        <li><strong>Préférences d'affichage (localStorage)</strong> : jusqu'à effacement manuel par l'utilisateur</li>
+        <li><strong>Logs Netlify</strong> : 30 jours maximum</li>
+        <li><strong>Données Google</strong> : selon les politiques de Google (variable selon le service)</li>
       </ul>
 
-      <h2>6. Durée de conservation</h2>
-      <p>Les données stockées localement (localStorage) sont conservées 7 jours puis supprimées automatiquement. Vous pouvez les effacer à tout moment en vidant le cache de votre navigateur.</p>
-
-      <h2>7. Vos droits (RGPD)</h2>
-      <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+      <h2>8. Vos droits</h2>
+      <p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des droits suivants concernant vos données personnelles :</p>
       <ul>
-        <li>Droit d'accès à vos données</li>
-        <li>Droit de rectification</li>
-        <li>Droit à l'effacement (« droit à l'oubli »)</li>
-        <li>Droit d'opposition au traitement</li>
-        <li>Droit à la portabilité</li>
+        <li><strong>Droit d'accès</strong> (Art. 15 RGPD) : obtenir une copie de vos données</li>
+        <li><strong>Droit de rectification</strong> (Art. 16 RGPD) : corriger des données inexactes</li>
+        <li><strong>Droit à l'effacement</strong> (Art. 17 RGPD) : demander la suppression de vos données</li>
+        <li><strong>Droit d'opposition</strong> (Art. 21 RGPD) : s'opposer à certains traitements</li>
+        <li><strong>Droit à la limitation</strong> (Art. 18 RGPD) : limiter le traitement de vos données</li>
+        <li><strong>Droit à la portabilité</strong> (Art. 20 RGPD) : recevoir vos données dans un format structuré</li>
+        <li><strong>Droit de retrait du consentement</strong> : à tout moment, sans affecter la licéité des traitements antérieurs</li>
       </ul>
-      <p>Pour exercer ces droits : <a href="mailto:maison.alerte.domotique@gmail.com">maison.alerte.domotique@gmail.com</a></p>
-      <p>Vous pouvez également introduire une réclamation auprès de la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a>.</p>
+      <p>Pour exercer ces droits, contactez-nous : <a href="mailto:VOTRE_EMAIL">VOTRE_EMAIL</a><br>
+      Délai de réponse : 30 jours maximum conformément au RGPD.</p>
+      <p>Vous pouvez également introduire une réclamation auprès de la <strong>Commission Nationale de l'Informatique et des Libertés (CNIL)</strong> :<br>
+      <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">www.cnil.fr/fr/plaintes</a> — 3 Place de Fontenoy, 75007 Paris</p>
 
-      <h2>8. Transfert hors UE</h2>
-      <p>OpenWeatherMap (UK) et Google (USA) peuvent traiter des données hors UE. Ces transferts sont encadrés par des clauses contractuelles types conformes au RGPD.</p>
+      <h2>9. Cookies — Comment les gérer</h2>
+      <p>Vous pouvez contrôler les cookies via :</p>
+      <ul>
+        <li>La bannière de consentement affichée lors de votre première visite</li>
+        <li>Les paramètres de votre navigateur (suppression, blocage)</li>
+        <li><a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener">Your Online Choices</a> pour les cookies publicitaires</li>
+        <li><a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a> pour les publicités Google</li>
+      </ul>
+      <p>Note : la désactivation des cookies techniques peut affecter le fonctionnement du site (mémorisation de la localisation, préférence d'affichage).</p>
 
-      <h2>9. Modification</h2>
-      <p>Cette politique peut être mise à jour. La date de dernière modification est indiquée ci-dessous.</p>
-      <p><em>Dernière mise à jour : 1er janvier 2025</em></p>
+      <h2>10. Sécurité</h2>
+      <p>Le site est servi exclusivement via HTTPS (protocole TLS). Les données stockées localement dans votre navigateur ne sont pas chiffrées mais ne sont accessibles que par le site lui-même (politique Same-Origin du navigateur).</p>
+
+      <h2>11. Modifications de cette politique</h2>
+      <p>Cette politique de confidentialité peut être mise à jour pour refléter les évolutions du service ou de la réglementation. La date de dernière modification est indiquée ci-dessous. En cas de modification substantielle, un avis sera affiché sur le site.</p>
+      <p><em>Dernière mise à jour : 17 mars 2026</em></p>
 
     </div>
   </div>
@@ -102,7 +168,7 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-bottom">
-      <span>© 2025 DRYME</span>
+      <span>© 2025 DRYME — Tous droits réservés</span>
       <span><a href="/mentions-legales.html">Mentions légales</a></span>
     </div>
   </div>
