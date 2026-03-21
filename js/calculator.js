@@ -6,6 +6,88 @@
 'use strict';
 
 /**
+ * Calcule le lever et coucher du soleil pour une date et position données
+ * Algorithme de Jean Meeus (Astronomical Algorithms) — précision ±1 min
+ *
+ * @param {number} lat       - Latitude en degrés
+ * @param {number} lon       - Longitude en degrés
+ * @param {Date}   date      - Date cible
+ * @returns {{ sunrise: Date, sunset: Date }}
+ */
+function getSunriseSunset(lat, lon, date) {
+  const rad  = Math.PI / 180;
+  const deg  = 180 / Math.PI;
+
+  // Jour julien
+  const JD = Math.floor(date.getTime() / 86400000) + 2440587.5;
+
+  // Calcul intermédiaire
+  const n    = JD - 2451545.0;
+  const L    = (280.460 + 0.9856474 * n) % 360;
+  const g    = (357.528 + 0.9856003 * n) % 360;
+  const lambda = L + 1.915 * Math.sin(g * rad) + 0.020 * Math.sin(2 * g * rad);
+  const epsilon = 23.439 - 0.0000004 * n;
+  const sinDec = Math.sin(epsilon * rad) * Math.sin(lambda * rad);
+  const dec    = Math.asin(sinDec) * deg;
+
+  // Angle horaire au lever/coucher (hauteur = -0.83° pour réfraction + disque solaire)
+  const cosH = (Math.sin(-0.83 * rad) - Math.sin(lat * rad) * Math.sin(dec * rad))
+             / (Math.cos(lat * rad) * Math.cos(dec * rad));
+
+  // Soleil toujours levé ou jamais levé (cercle polaire)
+  if (cosH > 1)  return { sunrise: null, sunset: null, polarNight: true  };
+  if (cosH < -1) return { sunrise: null, sunset: null, polarDay:   true  };
+
+  const H = Math.acos(cosH) * deg;
+
+  // Midi solaire local
+  const GMST  = 6.697375 + 0.0657098242 * n;
+  const RA    = Math.atan2(Math.cos(epsilon * rad) * Math.sin(lambda * rad), Math.cos(lambda * rad)) * deg / 15;
+  const noon  = (RA - (GMST % 24) - lon / 15 + 24) % 24; // en heures UTC
+
+  const sunriseUTC = noon - H / 15;
+  const sunsetUTC  = noon + H / 15;
+
+  // Convertir en Date locale
+  const base = new Date(date);
+  base.setUTCHours(0, 0, 0, 0);
+
+  const sunrise = new Date(base.getTime() + sunriseUTC * 3600000);
+  const sunset  = new Date(base.getTime() + sunsetUTC  * 3600000);
+
+  return { sunrise, sunset };
+}
+
+/**
+ * Vérifie si un créneau (fenêtre de prévisions) est compatible
+ * avec les contraintes solaires : au moins 30 min après le lever
+ * et au moins 30 min avant le coucher.
+ *
+ * @param {Array}  window    - Tableau de 2 prévisions OWM
+ * @param {number} lat       - Latitude
+ * @param {number} lon       - Longitude
+ * @returns {boolean}
+ */
+function isWithinDaylight(window, lat, lon) {
+  const startDate = new Date(window[0].dt * 1000);
+  const endDate   = new Date(window[window.length - 1].dt * 1000);
+  // La fin du créneau = heure de début de la dernière prévision + 3h
+  endDate.setHours(endDate.getHours() + 3);
+
+  const { sunrise, sunset } = getSunriseSunset(lat, lon, startDate);
+
+  // Nuit polaire → pas de séchage
+  if (!sunrise || !sunset) return false;
+
+  const MARGIN = 30 * 60 * 1000; // 30 minutes en ms
+  const dayStart = new Date(sunrise.getTime() + MARGIN);
+  const dayEnd   = new Date(sunset.getTime()  - MARGIN);
+
+  // Le créneau doit commencer après dayStart ET se terminer avant dayEnd
+  return startDate >= dayStart && endDate <= dayEnd;
+}
+
+/**
  * Calcule le score de séchage pour une prévision donnée
  * @param {Object} weather - Prévision OpenWeatherMap (1 entrée de /forecast)
  * @returns {number} Score entre 0 et 100
@@ -68,13 +150,15 @@ function calculateDryingScore(weather) {
 
 /**
  * Trouve le meilleur créneau de 4h dans une liste de prévisions
- * OWM fournit des intervalles de 3h → on utilise 2 prévisions = ~4-6h
+ * en respectant les contraintes solaires (lever/coucher ± 30 min)
  *
  * @param {Array}  forecasts - Tableau de prévisions OWM
- * @param {number} duration  - Durée souhaitée (toujours 4h pour l'affichage)
- * @returns {Object|null} Meilleur créneau ou null si insuffisant
+ * @param {number} duration  - Durée en heures (4)
+ * @param {number} lat       - Latitude (optionnel, défaut Paris)
+ * @param {number} lon       - Longitude (optionnel, défaut Paris)
+ * @returns {Object|null}
  */
-function findBestTimeSlot(forecasts, duration = 4) {
+function findBestTimeSlot(forecasts, duration = 4, lat = 48.8566, lon = 2.3522) {
   const NB_FORECAST = 2; // 2 × 3h ≈ 4-6h
 
   if (!forecasts || forecasts.length < NB_FORECAST) return null;
@@ -84,6 +168,9 @@ function findBestTimeSlot(forecasts, duration = 4) {
 
   for (let i = 0; i <= forecasts.length - NB_FORECAST; i++) {
     const window = forecasts.slice(i, i + NB_FORECAST);
+
+    // ── Filtre solaire : exclure les créneaux nocturnes ──
+    if (!isWithinDaylight(window, lat, lon)) continue;
 
     // Scores individuels
     const scores   = window.map(f => calculateDryingScore(f));
@@ -104,19 +191,24 @@ function findBestTimeSlot(forecasts, duration = 4) {
       const startDate = new Date(window[0].dt * 1000);
       const startHour = startDate.getHours();
 
-      // Moyennes des métriques
       const avg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+
+      // Récupérer les heures de lever/coucher pour les afficher
+      const { sunrise, sunset } = getSunriseSunset(lat, lon, startDate);
 
       bestSlot = {
         date:            startDate,
         startHour:       startHour,
-        endHour:         startHour + duration,  // Toujours +4h
+        endHour:         startHour + duration,
         score:           Math.round(avgScore),
         temperature:     Math.round(avg(window.map(f => f.main.temp))),
         humidity:        Math.round(avg(window.map(f => f.main.humidity))),
         windSpeed:       Math.round(avg(window.map(f => f.wind.speed)) * 3.6),
         rainProbability: Math.round(Math.max(...window.map(f => f.pop || 0)) * 100),
         sunshine:        Math.round(100 - avg(window.map(f => f.clouds.all))),
+        // Infos solaires
+        sunriseHour:     sunrise ? `${sunrise.getHours()}h${String(sunrise.getMinutes()).padStart(2,'0')}` : null,
+        sunsetHour:      sunset  ? `${sunset.getHours()}h${String(sunset.getMinutes()).padStart(2,'0')}`  : null,
         // Détail par critère pour le modal
         breakdown: {
           temp:     Math.round(window.reduce((s,f) => {
@@ -140,22 +232,17 @@ function findBestTimeSlot(forecasts, duration = 4) {
 
 /**
  * Retourne le badge associé à un score
- * @param {number} score - Score 0-100
- * @returns {Object} { emoji, text, cssClass, color }
  */
 function getScoreBadge(score) {
-  if (score >= 80) return { emoji: '🌟', text: 'Idéal',       cssClass: 'excellent',   color: '#059669' };
-  if (score >= 60) return { emoji: '✨', text: 'Très bon',    cssClass: 'tres-bon',    color: '#2563eb' };
-  if (score >= 40) return { emoji: '👍', text: 'Correct',     cssClass: 'correct',     color: '#d97706' };
-  if (score >= 20) return { emoji: '⚠️', text: 'Déconseillé', cssClass: 'deconseille', color: '#ea580c' };
-  return              { emoji: '❌', text: 'Mauvais',      cssClass: 'mauvais',     color: '#dc2626' };
+  if (score >= 80) return { emoji: '🌟', text: 'Idéal',        cssClass: 'excellent',   color: '#059669' };
+  if (score >= 60) return { emoji: '✨', text: 'Très bon',     cssClass: 'tres-bon',    color: '#2563eb' };
+  if (score >= 40) return { emoji: '👍', text: 'Correct',      cssClass: 'correct',     color: '#d97706' };
+  if (score >= 20) return { emoji: '⚠️', text: 'Déconseillé',  cssClass: 'deconseille', color: '#ea580c' };
+  return              { emoji: '❌', text: 'Mauvais',       cssClass: 'mauvais',     color: '#dc2626' };
 }
 
 /**
  * Filtre les prévisions pour une journée donnée
- * @param {Array}  forecasts - Toutes les prévisions
- * @param {number} dayOffset - 0 = aujourd'hui, 1 = demain
- * @returns {Array}
  */
 function getForecastsForDay(forecasts, dayOffset) {
   const now    = new Date();
@@ -172,7 +259,7 @@ function getForecastsForDay(forecasts, dayOffset) {
   });
 }
 
-// Export pour module ou usage global
+// Export
 if (typeof module !== 'undefined') {
-  module.exports = { calculateDryingScore, findBestTimeSlot, getScoreBadge, getForecastsForDay };
+  module.exports = { calculateDryingScore, findBestTimeSlot, getScoreBadge, getForecastsForDay, getSunriseSunset };
 }
