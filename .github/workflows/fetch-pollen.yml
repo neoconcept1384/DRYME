@@ -1,0 +1,50 @@
+# ============================================================
+# DRYME — GitHub Actions : Récupération quotidienne pollen
+# Atmo France / AASQA — Licence ODbL
+# ============================================================
+
+name: Récupération indice pollen
+
+on:
+  # Déclenché tous les jours à 12h30 (après la MAJ Atmo à 12h)
+  schedule:
+    - cron: '30 12 * * *'
+
+  # Possibilité de déclencher manuellement depuis GitHub
+  workflow_dispatch:
+
+jobs:
+  fetch-pollen:
+    name: Récupérer et sauvegarder les données pollen
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # Permet d'écrire dans le repo
+
+    steps:
+
+      # 1. Récupérer le code du repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Exécuter le script de récupération
+      - name: Récupérer l'indice pollen Atmo France
+        env:
+          ATMO_USERNAME: ${{ secrets.ATMO_USERNAME }}
+          ATMO_PASSWORD: ${{ secrets.ATMO_PASSWORD }}
+        run: node scripts/fetch-pollen.js
+
+      # 4. Commiter et pousser pollen.json si des données ont changé
+      - name: Sauvegarder pollen.json
+        run: |
+          git config user.name  "DRYME Bot"
+          git config user.email "bot@dryme.app"
+          git add data/pollen.json
+          git diff --staged --quiet || git commit -m "🌼 MAJ indice pollen $(date +'%Y-%m-%d')"
+          git push
