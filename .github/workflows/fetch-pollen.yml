@@ -1,6 +1,6 @@
 # ============================================================
 # DRYME — GitHub Actions : Récupération quotidienne pollen
-# Atmo France / AASQA — Licence ODbL   re 
+# Atmo France / AASQA — Licence ODbL   re   
 # ============================================================
 
 name: Récupération indice pollen
