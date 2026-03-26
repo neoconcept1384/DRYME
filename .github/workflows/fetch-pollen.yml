@@ -6,6 +6,7 @@
 name: Récupération indice pollen
 
 on:
+  push:
   # Déclenché tous les jours à 12h30 (après la MAJ Atmo à 12h)
   schedule:
     - cron: '30 12 * * *'
